@@ -1,0 +1,38 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-labels
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: check-for-labels
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "The labels 'app' and 'environment' are required."
+      pattern:
+        metadata:
+          labels:
+            app: "?*"
+            environment: "?*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: require-specific-tag
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Using 'latest' tag is not allowed. Please use a specific tag."
+      pattern:
+        spec:
+          containers:
+          - image: "!*:latest"
