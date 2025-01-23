@@ -1,4 +1,11 @@
-venv
+# Start of Selection
+venv/
 .aider*
-*terraform*
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+*.tfvars
 helm/
+k8s/
+# End of Selection
